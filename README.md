@@ -7,8 +7,11 @@ It's optimized to serve as a query result cache between KG-API and Postgres DB. 
 
 ### Running the Container
 
-Specify multiple Postgres servers, and bind pg-pool to port 9999 to avoid port-conflicts with locally running dbs.  
-```sudo docker run --name pgpool2 -e PGPOOL_BACKENDS=1:127.0.0.1:5432,2:127.0.0.1:5433 -p 9999:5432/tcp fubotv/kg-pgpool```
+Execute: `./build_and_run.sh`
+
+Or to manually specify multiple Postgres servers, and bind pg-pool to port 9999 to avoid port-conflicts with locally running dbs:  
+
+```sudo docker run --name pgpool2 -e PGPOOL_BACKENDS=1:some-hostname:5432,2:other-hostname:5433 -p 9999:5432/tcp fubotv/kg-pgpool```
 
 ### Configuration Environment Variables
 
