@@ -114,7 +114,7 @@ ssl = off
 
 # - Pool size -
 
-num_init_children = 32
+num_init_children = 4
                                    # Number of pools
                                    # (change requires restart)
 max_pool = 4
@@ -161,7 +161,7 @@ log_hostname = on
                                    # and in logs if connections are logged
 log_statement = off
                                    # Log all statements
-log_per_node_statement = off
+log_per_node_statement = on
                                    # Log all statements
                                    # with node and backend informations
 log_standby_delay = 'none'
@@ -472,7 +472,7 @@ wd_authkey = ''
 
 delegate_IP = ''
                                     # delegate IP address
-                                    # If this is empty, virtual IP never bring up. 
+                                    # If this is empty, virtual IP never bring up.
                                     # (change requires restart)
 ifconfig_path = '/sbin'
                                     # ifconfig command path
@@ -493,7 +493,7 @@ arping_cmd = 'arping -U $_IP_$ -w 1'
 
 # - Behaivor on escalation Setting -
 
-clear_memqcache_on_escalation = on
+clear_memqcache_on_escalation = off
                                     # Clear all the query cache on shared memory
                                     # when standby pgpool escalate to active pgpool
                                     # (= virtual IP holder).
@@ -504,7 +504,7 @@ wd_escalation_command = ''
                                     # Executes this command at escalation on new active pgpool.
                                     # (change requires restart)
 
-# - Lifecheck Setting - 
+# - Lifecheck Setting -
 
 # -- common --
 
@@ -530,7 +530,7 @@ heartbeat_destination0 = 'host0_ip1'
                                     # Host name or IP address of destination 0
                                     # for sending heartbeat signal.
                                     # (change requires restart)
-heartbeat_destination_port0 = 9694 
+heartbeat_destination_port0 = 9694
                                     # Port number of destination 0 for sending
                                     # heartbeat signal. Usually this is the
                                     # same as wd_heartbeat_port.
@@ -606,7 +606,7 @@ relcache_size = 256
                                    # "pool_search_relcache: cache replacement happend"
                                    # in the pgpool log, you might want to increate this number.
 
-check_temp_table = on
+check_temp_table = off
                                    # If on, enable temporary table check in SELECT statements.
                                    # This initiates queries against system catalog of primary/master
                                    # thus increases load of master.
@@ -618,7 +618,7 @@ check_temp_table = on
 #------------------------------------------------------------------------------
 # ON MEMORY QUERY MEMORY CACHE
 #------------------------------------------------------------------------------
-memory_cache_enabled = off
+memory_cache_enabled = on
 								   # If on, use the memory cache functionality, off by default
 memqcache_method = 'shmem'
 								   # Cache storage method. either 'shmem'(shared memory) or
@@ -633,38 +633,42 @@ memqcache_memcached_port = 11211
 								   # Memcached port number. Mondatory if memqcache_method = 'memcached'.
 								   # Defaults to 11211.
                                    # (change requires restart)
-memqcache_total_size = 67108864
+memqcache_total_size = 134217728
+                                   # 128MiB
 								   # Total memory size in bytes for storing memory cache.
 								   # Mandatory if memqcache_method = 'shmem'.
 								   # Defaults to 64MB.
                                    # (change requires restart)
-memqcache_max_num_cache = 1000000
+memqcache_max_num_cache = 100000
+                                   # 100k entries (~5MiB)
 								   # Total number of cache entries. Mandatory
 								   # if memqcache_method = 'shmem'.
 								   # Each cache entry consumes 48 bytes on shared memory.
 								   # Defaults to 1,000,000(45.8MB).
                                    # (change requires restart)
-memqcache_expire = 0
+memqcache_expire = 3600
 								   # Memory cache entry life time specified in seconds.
 								   # 0 means infinite life time. 0 by default.
                                    # (change requires restart)
-memqcache_auto_cache_invalidation = on
+memqcache_auto_cache_invalidation = off
 								   # If on, invalidation of query cache is triggered by corresponding
 								   # DDL/DML/DCL(and memqcache_expire).  If off, it is only triggered
 								   # by memqcache_expire.  on by default.
                                    # (change requires restart)
-memqcache_maxcache = 409600
+memqcache_maxcache = 2048576
+                                   # 2 MiB
 								   # Maximum SELECT result size in bytes.
 								   # Must be smaller than memqcache_cache_block_size. Defaults to 400KB.
                                    # (change requires restart)
-memqcache_cache_block_size = 1048576
+memqcache_cache_block_size = 4097152
+                                   # 4MiB
 								   # Cache block size in bytes. Mandatory if memqcache_method = 'shmem'.
 								   # Defaults to 1MB.
                                    # (change requires restart)
 memqcache_oiddir = '/var/log/pgpool/oiddir'
 				   				   # Temporary work directory to record table oids
                                    # (change requires restart)
-white_memqcache_table_list = ''
+white_memqcache_table_list = '.*'
                                    # Comma separated list of table names to memcache
                                    # that don't write to database
                                    # Regexp are accepted
