@@ -1,17 +1,14 @@
-# Pgpool2.
-
+# pg-pool2 tweaked for fuboTV KG
+# based on manuc66/pgpool2-container and hegand/pgpool
 FROM hegand/alpine:edge
-
 ENV PGPOOL_VERSION 3.5.4
-
 ENV PG_VERSION 9.6.0-r1
-
 ENV LANG en_US.utf8
     
 RUN apk --update --no-cache add libpq=${PG_VERSION} postgresql-dev=${PG_VERSION} postgresql-client=${PG_VERSION} \
                                 linux-headers gcc make libgcc g++ \
                                 libffi-dev python python-dev py2-pip libffi-dev && \
-    cd /tmp &&\ 
+    cd /tmp && \
     wget http://www.pgpool.net/mediawiki/images/pgpool-II-${PGPOOL_VERSION}.tar.gz -O - | tar -xz && \
     chown root:root -R /tmp/pgpool-II-${PGPOOL_VERSION} && \
     cd /tmp/pgpool-II-${PGPOOL_VERSION} && \
