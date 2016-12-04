@@ -3,9 +3,12 @@ Pgpool2 Dockerfile
 
 This project can be used to deploy pgpool2 inside a Docker container for transparent failover between two postgresql hosts without requiring a floating IP address.
 
+It's optimized to serve as a query result cache between KG-API and Postgres DB. Combined with read-only secondaries, this should provide a realiable and fast backend.
+
 ### Running the Container
 
-```sudo docker run --name pgpool2 -e PGPOOL_BACKENDS=1:127.0.0.1:5432,2:127.0.0.1:5433 -p 5432:5432/tcp manuc66/pgpool2-container-alpine:latest```
+Specify multiple Postgres servers, and bind pg-pool to port 9999 to avoid port-conflicts with locally running dbs.  
+```sudo docker run --name pgpool2 -e PGPOOL_BACKENDS=1:127.0.0.1:5432,2:127.0.0.1:5433 -p 9999:5432/tcp fubotv/kg-pgpool```
 
 ### Configuration Environment Variables
 
